@@ -58,15 +58,12 @@ class AAEmbedding(nn.Module):
         self.feat_dim    = feat_dim
         self.infeat_dim  = infeat_dim
 
-    # ----------------------------------------------------------------
-    # RBF helpers — flat (N,) version for PyG node tensors
-    # ----------------------------------------------------------------
+    
     def _rbf(self, D: torch.Tensor,D_min: float, D_max: float,
               stride: float) -> torch.Tensor:
-        """
-        D      : (N,)  scalar property per node
-        returns: (N, K) RBF expansion
-        """
+        
+        #returns: (N, K) RBF expansion
+        
         D=torch.nan_to_num(D,nan=0.0)
         D=D.clamp(D_min-stride,D_max+stride)
         D_count = int((D_max - D_min) / stride)
@@ -87,17 +84,12 @@ class AAEmbedding(nn.Module):
             torch.sigmoid(aa_vecs[:, 3:] * 6 - 3),        # pol/acc/don →  3
         ], dim=-1)   # (N, 123)
 
-    # ----------------------------------------------------------------
-    # index → 1-letter conversion
-    # ----------------------------------------------------------------
+   
     @classmethod
     def resname_to_idx(cls, resname3: str) -> int:
         aa1 = cls.AA3TO1.get(resname3.upper(), '-')
         return cls.AA_TO_IDX.get(aa1, cls.AA_TO_IDX['-'])
-
-    # ----------------------------------------------------------------
-    # forward — flat (N,) integer token tensor (PyG style)
-    # ----------------------------------------------------------------
+  
     def forward(self, x: torch.Tensor,
                 raw: bool = False) -> torch.Tensor:
         """
@@ -129,9 +121,6 @@ class AAEmbedding(nn.Module):
         return self.feat_dim
 
 
-# ----------------------------------------------------------------
-# integration with your node feature builder
-# ----------------------------------------------------------------
 
 class NodeEncoder(nn.Module):
     """
