@@ -91,8 +91,7 @@ class SAGEConv(nn.Module):
 class BindingSAGE(nn.Module):
     """
     GraphSAGE-based PPI interface predictor.
-    No PyG dependency — pure PyTorch.
-
+    
     Node features: AAEmbedding (RBF) + structural/dynamic feats
     Edge features: RING interaction type, donor, distance, angle
     Graph features: TM-score, ebind_mean etc → broadcast to nodes
