@@ -1,4 +1,4 @@
-# rank_and_hotspot.py
+
 import os
 import glob
 import pickle
